@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>星级评分03 代码优化</title>
+    <script src="js/jquery-2.2.4.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<ul id="rating01" class="rating clearfix">
+    <li class="rating-item" title="很不好"></li>
+    <li class="rating-item" title="不好"></li>
+    <li class="rating-item" title="一般"></li>
+    <li class="rating-item" title="好"></li>
+    <li class="rating-item" title="很好"></li>
+</ul>
+<ul id="rating02" class="rating clearfix">
+    <li class="rating-item" title="很不好"></li>
+    <li class="rating-item" title="不好"></li>
+    <li class="rating-item" title="一般"></li>
+    <li class="rating-item" title="好"></li>
+    <li class="rating-item" title="很好"></li>
+</ul>
+
+<ul id="rating03" class="rating clearfix">
+    <li class="rating-item" title="很不好"></li>
+    <li class="rating-item" title="不好"></li>
+    <li class="rating-item" title="一般"></li>
+    <li class="rating-item" title="好"></li>
+    <li class="rating-item" title="很好"></li>
+</ul>
+
+
+<script>
+    /* 优化要点
+     * 1,自运函数，避免污染全局空间，方便协作，和以后为维护
+     * 2，事件委托，优化性能
+     * 3，封装，复用
+     */
+
+
+
+    $(function () {
+        //(function () {})() 自执行函数 避免污染全局空间
+       var rating = (function () {
+
+           //lightOn 要调用很多次 所以提取出来 由于$item是在init中声明的所以要把$item传进来
+           var lightOn = function ($item,num) {
+               $item.each(function (index) {
+                   if (index < num){
+                       $(this).css('background-position','0 -40px')
+                   }else {
+                       $(this).css('background-position','0 0')
+                   }
+               })
+           };
+
+            var init = function (el,num) {
+                var $rating = $(el);
+                var $item = $rating.find('.rating-item');
+
+                lightOn($item,num);
+                $rating.on('mouseover','.rating-item',function () {
+                    lightOn($item,$(this).index()+1)
+                }).on('click','.rating-item',function () {
+                    num = $(this).index()+1
+                }).on('mouseout',function () {
+                    lightOn($item,num)
+                })
+
+            };
+
+
+            return {
+                init:init
+            };
+        })();
+
+        rating.init('#rating01',2);
+        rating.init('#rating02',3);
+        rating.init('#rating03',1);
+
+    })
+</script>
+</body>
+</html>

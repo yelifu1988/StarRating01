@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>星级评分03 jq插件写法</title>
+    <script src="js/jquery-2.2.4.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<ul id="rating01" class="rating clearfix">
+    <li class="rating-item" title="很不好"></li>
+    <li class="rating-item" title="不好"></li>
+    <li class="rating-item" title="一般"></li>
+    <li class="rating-item" title="好"></li>
+    <li class="rating-item" title="很好"></li>
+</ul>
+<ul id="rating02" class="rating clearfix">
+    <li class="rating-item" title="很不好"></li>
+    <li class="rating-item" title="不好"></li>
+    <li class="rating-item" title="一般"></li>
+    <li class="rating-item" title="好"></li>
+    <li class="rating-item" title="很好"></li>
+</ul>
+
+<ul id="rating03" class="rating clearfix">
+    <li class="rating-item" title="很不好"></li>
+    <li class="rating-item" title="不好"></li>
+    <li class="rating-item" title="一般"></li>
+    <li class="rating-item" title="好"></li>
+    <li class="rating-item" title="很好"></li>
+</ul>
+
+
+<script>
+    /* jquery插件写法
+     * 在02的基础上 把return {init:init}改成第74行的写法
+     *
+     *
+     */
+
+
+
+    $(function () {
+        //(function () {})() 自执行函数 避免污染全局空间
+        var rating = (function () {
+
+            //lightOn 要调用很多次 所以提取出来 由于$item是在init中声明的所以要把$item传进来
+            var lightOn = function ($item,num) {
+                $item.each(function (index) {
+                    if (index < num){
+                        $(this).css('background-position','0 -40px')
+                    }else {
+                        $(this).css('background-position','0 0')
+                    }
+                })
+            };
+
+            var init = function (el,num) {
+                var $rating = $(el);
+                var $item = $rating.find('.rating-item');
+
+                lightOn($item,num);
+                $rating.on('mouseover','.rating-item',function () {
+                    lightOn($item,$(this).index()+1)
+                }).on('click','.rating-item',function () {
+                    num = $(this).index()+1
+                }).on('mouseout',function () {
+                    lightOn($item,num)
+                })
+
+            };
+
+            //jquery插件
+            $.fn.extend({
+                rating:function (num) {
+                    return this.each(function () {
+                        init(this,num)
+                    })
+                }
+            });
+
+        })();
+
+        $('#rating01').rating(1);
+        $('#rating02').rating(2);
+        $('#rating03').rating(3)
+
+    })
+</script>
+</body>
+</html>

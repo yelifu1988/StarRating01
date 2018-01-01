@@ -1,0 +1,30 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style: none;
+}
+.clearfix:after{
+    content: "";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
+}
+
+.clearfix { *zoom:1; }
+
+.rating{
+    width: 160px;
+    margin: 20px auto;
+}
+.rating-item{
+    float: left;
+    width: 32px;
+    height: 32px;
+    display: block;
+    background: url("../img/iVPGGC.png") no-repeat;
+    background-position: 0 0;
+    cursor: pointer;
+}

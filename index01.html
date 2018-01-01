@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>星级评分01</title>
+    <script src="js/jquery-2.2.4.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<ul id="rating" class="rating clearfix">
+    <li class="rating-item" title="很不好"></li>
+    <li class="rating-item" title="不好"></li>
+    <li class="rating-item" title="一般"></li>
+    <li class="rating-item" title="好"></li>
+    <li class="rating-item" title="很好"></li>
+</ul>
+
+
+<script>
+    $(function () {
+        var num = 2;
+        var $rating = $('.rating');
+        var $item = $rating.find('.rating-item');
+//        初始化函数
+        var lightOn = function (num) {
+            $item.each(function (index) {
+                if (index < num){
+                    $(this).css('background-position','0 -40px')
+                }else {
+                    $(this).css('background-position','0 0')
+                }
+            })
+        }
+        lightOn(num);
+
+        $item.on('mouseover',function () {
+            console.log(123);
+            lightOn($(this).index()+1)
+        }).on('click',function () {
+            num = $(this).index()+1
+        });
+        
+        $rating.on('mouseout',function () {
+            lightOn(num)
+        })
+        
+    })
+</script>
+</body>
+</html>
